@@ -1,3 +1,8 @@
+"""
+Table
+SПВПВП...
+123456...
+"""
 def func1_1(a, s, p):  # 2 piles, +3, *2, >= 375, vanya first win, bad case petya, min s
     if p == 3:
         if a + s >= 375:
