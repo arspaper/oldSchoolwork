@@ -116,10 +116,11 @@ def func2_2(s, p):  # 1 pile, +1, +5, *3, >= 199, petya second win, any case van
 
 print("2_2")
 ans = list()
+ans.sort()
 for s in range(1, 199):
     if func2_2(s, 1):
         ans.append(s)
-print(min(ans), max(ans))
+print(ans[0], ans[1])
 print()
 
 
