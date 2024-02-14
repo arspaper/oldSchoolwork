@@ -45,6 +45,14 @@ class NewGraph:
         if self.verticles[v1 - 1][v2 - 1] == self.verticles[v2 - 1][v1 - 1]:
             return (False, value)
         return (True, value)
+    
+    def get_all_edges(self):
+        edges = set()
+        for i in range(len(self.verticles)):
+            for j in range(i + 1, len(self.verticles[i])):
+                if self.verticles[i][j] != 0:
+                    edges.add((i + 1, j + 1))
+        return sorted(edges)
 
     def get_adjacents(self, verticle):
         adjacents = []
@@ -66,8 +74,17 @@ class NewGraph:
     def get_count_edges(self):
         edge_count = 0
         for i in range(len(self.verticles)):
-            for j in range(i + 1, len(self.verticles)):
+            for j in range(i + 1, len(self.verticles[i])):
                 if self.verticles[i][j] > 0:
                     edge_count += 1
         return edge_count
- 
+    
+    def get_graph_type(self):
+        for i in range(len(self.verticles)):
+            if self.verticles[i][i] != 0:
+                return "NO"
+            for j in range(len(self.verticles)):
+                if self.verticles[i][j] != self.verticles[j][i]:
+                    return "NO"
+        return "YES"
+
