@@ -25,59 +25,49 @@ class Graph:
 
 
 class NewGraph:
-	def __init__(self, verticle_num):
-		self.verticles = [[0 for i in range(verticle_num)] for j in range(verticle_num)]
-		self.colors = list()
+    def __init__(self, verticle_num):
+        self.verticles = [[0 for i in range(verticle_num)] for j in range(verticle_num)]
 
-	def add_edge(self, v1, v2, value):
-		if v1 == v2 or value == 0:
-			return
-		self.verticles[v1 - 1][v2 - 1] = value
-		self.verticles[v2 - 1][v1 - 1] = value
-	
-	def remove_edge(self, v1, v2):
-		if v1 == v2:
-			return
-		self.verticles[v1 - 1][v2 - 1] = 0
-		self.verticles[v2 - 1][v1 - 1] = 0
-	
-	def get_edge(self, v1, v2):
-		if v1 == v2:
-			return 0
-		return self.verticles[v1 - 1][v2 - 1]
-		
-	def get_adjacents(self, verticle):
-		adjacents = list()
-		path = self.verticles[verticle - 1]
-		for i in range(len(path)):
-			if path[i] != 0:
-				adjacents.append(i + 1)
-		return(adjacents)	
-	
-	def get_graph(self):
-		for i in self.verticles:
-			print(*i)
+    def add_edge(self, v1, v2, value, directed=False):
+        if value == 0:
+            return
+        self.verticles[v1 - 1][v2 - 1] = value
+        if not directed:
+            self.verticles[v2 - 1][v1 - 1] = value
 
-	def table_overwrite_graph(self, table):
-		for i in range(len(self.verticles)):
-			for j in range(len(self.verticles)):
-				self.add_edge(i + 1, j + 1, int(table[i][j]))
+    def remove_edge(self, v1, v2, directed=False):
+        self.verticles[v1 - 1][v2 - 1] = 0
+        if not directed:
+            self.verticles[v2 - 1][v1 - 1] = 0
 
-	def count_all_edges(self):
-		edge_count = 0
-		for i in range(len(self.verticles)):
-			for j in range(i + 1, len(self.verticles)):
-				if self.verticles[i][j] > 0:
-					edge_count += 1
-		return edge_count
+    def get_edge(self, v1, v2):
+        value = self.verticles[v1 - 1][v2 - 1]
+        if self.verticles[v1 - 1][v2 - 1] == self.verticles[v2 - 1][v1 - 1]:
+            return (False, value)
+        return (True, value)
 
-	def set_colors(self, colors):
-		self.colors = [int(color) for color in colors]
+    def get_adjacents(self, verticle):
+        adjacents = []
+        path = self.verticles[verticle - 1]
+        for i in range(len(path)):
+            if path[i] != 0:
+                adjacents.append(i + 1)
+        return adjacents        
 
-	def count_bad_edges(self):
-		bad_edges = 0
-		for i in range(len(self.verticles)):
-			for j in range(i + 1, len(self.verticles)):
-				if self.verticles[i][j] == 1 and self.colors[i] != self.colors[j]:
-					bad_edges += 1
-		return bad_edges
+    def get_graph(self):
+        for i in self.verticles:
+            print(*i)
+
+    def table_overwrite_graph(self, table):
+        for i in range(len(self.verticles)):
+            for j in range(len(self.verticles[i])):
+                self.add_edge(i + 1, j + 1, int(table[i][j]))
+
+    def get_count_edges(self):
+        edge_count = 0
+        for i in range(len(self.verticles)):
+            for j in range(i + 1, len(self.verticles)):
+                if self.verticles[i][j] > 0:
+                    edge_count += 1
+        return edge_count
+ 
