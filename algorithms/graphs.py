@@ -45,7 +45,7 @@ class NewGraph:
         if self.verticles[v1 - 1][v2 - 1] == self.verticles[v2 - 1][v1 - 1]:
             return (False, value)
         return (True, value)
-    
+
     def get_all_edges(self):
         edges = set()
         for i in range(len(self.verticles)):
@@ -60,7 +60,7 @@ class NewGraph:
         for i in range(len(path)):
             if path[i] != 0:
                 adjacents.append(i + 1)
-        return adjacents        
+        return adjacents
 
     def get_graph(self):
         for i in self.verticles:
@@ -78,7 +78,7 @@ class NewGraph:
                 if self.verticles[i][j] > 0:
                     edge_count += 1
         return edge_count
-    
+
     def get_graph_type(self):
         for i in range(len(self.verticles)):
             if self.verticles[i][i] != 0:
@@ -88,3 +88,37 @@ class NewGraph:
                     return "NO"
         return "YES"
 
+    def count_connected(self):
+        visited = [False] * len(self.verticles)
+
+        def dfs(v):
+            visited[v] = True
+            for i in range(len(self.verticles)):
+                if self.verticles[v][i] != 0 and not visited[i]:
+                    dfs(i)
+
+        count = 0
+        for v in range(len(self.verticles)):
+            if not visited[v]:
+                dfs(v)
+                count += 1
+        return count
+
+    def is_bipartite(graph):
+        n = len(graph)
+        colors = [0] * n
+
+        def dfs(v, color):
+            colors[v] = color
+            for i in range(n):
+                if graph[v][i] == 1:
+                    if colors[i] == color:
+                        return False
+                    if colors[i] == 0 and not dfs(i, 3 - color):
+                        return False
+            return True
+
+        for v in range(n):
+            if colors[v] == 0 and not dfs(v, 1):
+                return "NO", []
+        return "YES", colors
